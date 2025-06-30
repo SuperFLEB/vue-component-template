@@ -1,0 +1,22 @@
+body {
+	font: 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
+	margin: 1em;
+	padding: 0;
+	background-color: #fff;
+	text-size-adjust: none;
+	-moz-text-size-adjust: none;
+	-webkit-text-size-adjust: none;
+}
+
+body, #app {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #333;
+		color: #ccc;
+	}
+}

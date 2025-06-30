@@ -1,0 +1,43 @@
+{
+  "name": "@superfleb/vue-component-template",
+  "description": "A Vue component",
+  "license": "MIT",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --b --noEmit && vite build && vue-tsc -p tsconfig.lib.json --outDir ./dist",
+    "build-demo": "vite build -c vite.build-demo.config.ts",
+    "test-ct": "playwright test -c playwright-ct.config.ts"
+  },
+  "exports": {
+    "import": {
+      "types": "./dist/SampleComponent.vue.d.ts",
+      "default": "./dist/SampleComponent.mjs"
+    }
+  },
+  "files": [
+    "dist",
+    "dist-demo",
+    "README.md",
+    ".yarnrc.yml",
+    "package.json"
+  ],
+  "devDependencies": {
+    "@playwright/experimental-ct-vue": "^1.53.0",
+    "@playwright/test": "^1.53.0",
+    "@superfleb/bump": "^1.0.1",
+    "@types/node": "^22.13.5",
+    "@vitejs/plugin-vue": "^5.2.3",
+    "@vue/tsconfig": "^0.7.0",
+    "sass": "^1.86.3",
+    "typescript": "~5.7.2",
+    "vite": "^6.3.4",
+    "vite-plugin-lib-inject-css": "^2.2.2",
+    "vue": "^3.5.13",
+    "vue-tsc": "^2.2.0"
+  },
+  "peerDependencies": {
+    "vue": "*"
+  },
+  "packageManager": "yarn@4.9.2"
+}
