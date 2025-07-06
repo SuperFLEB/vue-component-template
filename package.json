@@ -5,13 +5,13 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --b --noEmit && vite build && vue-tsc -p tsconfig.lib.json --outDir ./dist",
-    "build-demo": "vite build -c vite.build-demo.config.ts",
+    "build": "node build/build.mjs",
+    "build-demo": "node build/build.mjs demo",
     "test-ct": "playwright test -c playwright-ct.config.ts"
   },
   "exports": {
     "import": {
-      "types": "./dist/SampleComponent.vue.d.ts",
+      "types": "./dist/vue-component-template.d.ts",
       "default": "./dist/SampleComponent.mjs"
     }
   },
@@ -23,12 +23,14 @@
     "package.json"
   ],
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.52.8",
     "@playwright/experimental-ct-vue": "^1.53.0",
     "@playwright/test": "^1.53.0",
     "@superfleb/bump": "^1.0.1",
     "@types/node": "^22.13.5",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/tsconfig": "^0.7.0",
+    "resolve-tspaths": "^0.8.23",
     "sass": "^1.86.3",
     "typescript": "~5.7.2",
     "vite": "^6.3.4",
