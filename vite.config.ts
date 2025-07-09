@@ -1,6 +1,8 @@
 import {defineConfig} from "vite";
 import vue from "@vitejs/plugin-vue";
 import * as path from "node:path";
+import version from "@superfleb/vite-plugin-version/plugin";
+
 import {globSync} from "tinyglobby";
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
 
@@ -25,6 +27,7 @@ export default defineConfig(() => (
 	{
 		appType: "mpa", // disable history fallback
 		plugins: [
+			version(),
 			vue(),
 			libInjectCss(),
 		],

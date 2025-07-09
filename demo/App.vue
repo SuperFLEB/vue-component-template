@@ -3,6 +3,6 @@ import SampleComponent from "@/SampleComponent.vue";
 </script>
 
 <template>
-	<p>Vue Sample Component Demo</p>
+	<h1>Vue Sample Component Demo</h1>
 	<SampleComponent message="Sample Component Demo" />
 </template>

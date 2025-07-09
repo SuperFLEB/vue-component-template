@@ -1,3 +1,4 @@
 # @superfleb/vue-component-template
 
-A Vue component
+A template for making Vue components.
+

@@ -1,8 +1,9 @@
 {
   "name": "@superfleb/vue-component-template",
   "description": "A Vue component",
+  "type": "module",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "dev": "vite",
     "build": "node build/build.mjs",
@@ -27,6 +28,7 @@
     "@playwright/experimental-ct-vue": "^1.53.0",
     "@playwright/test": "^1.53.0",
     "@superfleb/bump": "^1.0.1",
+    "@superfleb/vite-plugin-version": "^0.1.2",
     "@types/node": "^22.13.5",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/tsconfig": "^0.7.0",
