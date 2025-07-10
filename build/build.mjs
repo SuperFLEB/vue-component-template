@@ -17,12 +17,12 @@ const builds = {
 	],
 	"demo": [
 		{cmd: () => rm(home("dist-demo")), title: 'Clean "dist-demo" directory'},
-		{cmd: "yarn", args: ["vite", "build"], env: {BUILD_TYPE: "demo"}},
+		{cmd: "yarn", args: ["vite", "build"], env: {...process.env, BUILD_TYPE: "demo"}},
 	]
 };
 
 builds.release = [
-	{cmd: "yarn run test-ct", msg: "Playwright Component Test"},
+	{cmd: "yarn", args: ["run", "test-ct"], msg: "Playwright Component Test"},
 	...builds.app,
 ]
 
