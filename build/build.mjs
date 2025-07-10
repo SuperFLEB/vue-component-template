@@ -6,20 +6,22 @@ import {rm, home, execAll} from "./helpers.mjs";
 const DEFAULT_BUILD = "app";
 const builds = {
 	"app": [
-		["yarn vue-tsc --b --noEmit", "Check TypeScript"],
-		["yarn vite build", "Vite build"],
-		["yarn vue-tsc --b", "Generate .d.ts files"],
-		["resolve-tspaths -p tsconfig.lib.json", "Resolve TypeScript aliases in .d.ts files"],
-		["api-extractor run --local --verbose -c api-extractor.jsonc", "Create .d.ts rollup file"],
-		[() => rm(home("dist/dts")), "Clean up unnecessary .d.ts files"]
+		{cmd: () => rm(home("dist")), msg: 'Clean "dist" directory'},
+		{cmd: "yarn vue-tsc --b --noEmit", msg: "Check TypeScript"},
+		{cmd: "yarn vite build", msg: "Vite build"},
+		{cmd: "yarn vue-tsc --b", msg: "Generate .d.ts files"},
+		{cmd: "resolve-tspaths -p tsconfig.lib.json", msg: "Resolve TypeScript aliases in .d.ts files"},
+		{cmd: "api-extractor run --local --verbose -c api-extractor.jsonc", msg: "Create .d.ts rollup file"},
+		{cmd: () => rm(home("dist/dts")), msg: "Remove individual .d.ts files"}
 	],
 	"demo": [
-		["vite build -c vite.build-demo.config.ts"],
+		{cmd: () => rm(home("dist-demo")), msg: 'Clean "dist-demo" directory'},
+		{cmd: "yarn vite build", env: {BUILD_TYPE: "demo"}},
 	]
 };
 
 builds.release = [
-	["yarn run test-ct", "Playwright Component Test"],
+	{cmd: "yarn run test-ct", msg: "Playwright Component Test"},
 	...builds.app,
 ]
 

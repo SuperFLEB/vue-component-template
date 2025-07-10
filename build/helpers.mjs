@@ -25,32 +25,28 @@ export function rm(dir) {
 };
 
 export function execAll(execSpecArray) {
-	execSpecArray.forEach((execSpec, idx) => exec(execSpec, idx+1, execSpecArray.length));
+	execSpecArray.forEach((execSpec, idx) => exec(execSpec, idx + 1, execSpecArray.length));
 }
 
-export function exec(fnOrCmdAndName, step, ofSteps) {
-	const explicitName = Array.isArray(fnOrCmdAndName) && fnOrCmdAndName[1];
-	let name = explicitName ?? ((Array.isArray(fnOrCmdAndName)) ? fnOrCmdAndName[0] : fnOrCmdAndName.toString().split("\n")[0]);
-
-	const command = (Array.isArray(fnOrCmdAndName)) ? fnOrCmdAndName[0] : fnOrCmdAndName;
-
+export function exec(command, stepIndex, ofSteps) {
+	let message = command.msg ? command.msg : command.cmd.toString().split("\n")[0];
 	const width = Math.min(120, process.stdout.columns || 120);
 	const fill = (str, filler, cap) => str + filler.repeat(Math.max(1, width - str.length - cap.length)) + cap;
 
 	console.log(fill(" ┌", "─", "┐ "));
-	console.log(fill(`╒╡ ${name} ╞`, "═", `═╡ ⏳  ${step} / ${ofSteps}  ╞╕`));
-	console.log(fill(`╯│ ${command.toString().split("\n")[0]}`, " ", "│╰") + "\n");
-	switch (typeof command) {
+	console.log(fill(`╒╡ ${message} ╞`, "═", `═╡ ⏳  ${stepIndex} / ${ofSteps}  ╞╕`));
+	console.log(fill(`╯│ ${command.cmd.toString().split("\n")[0]}`, " ", "│╰") + "\n");
+	switch (typeof command.cmd) {
 		case "string":
-			execSync(command, { stdio: "inherit" });
+			execSync(command.cmd, {stdio: "inherit", env: command.env ?? {}});
 			break;
 		case "function":
-			command();
+			command.cmd();
 			break;
 		default:
-			throw new Error(`${command} is not a valid command.`);
+			throw new Error(`${command.cmd} is not a valid command.`);
 	}
-	console.log(fill("╮"," ","╭ "));
-	console.log(fill(`╘╡ ✔️ ${name} ╞`, "═", `═╡  ✔️ ${step} / ${ofSteps}  ╞╛`));
+	console.log(fill("╮", " ", "╭ "));
+	console.log(fill(`╘╡ ✔️ ${message} ╞`, "═", `═╡  ✔️ ${stepIndex} / ${ofSteps}  ╞╛`));
 	console.log(fill(" └", "─", "┘ ") + "\n");
 }

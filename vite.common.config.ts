@@ -1,18 +1,22 @@
-import {defineConfig} from "vite";
+import version from "@superfleb/vite-plugin-version/plugin";
 import vue from "@vitejs/plugin-vue";
 import path from "node:path";
 
-export default defineConfig({
-	plugins: [vue()],
+/* This is a partial configuration with common options. It should be merged with a more specific configuration */
+
+export const projectName = "VueComponentTemplateSampleProject";
+
+export default {
 	base: "./",
+	plugins: [
+		version(),
+		vue()
+	],
 	build: {
 		assetsInlineLimit: 0,
-		outDir: "./dist-demo/",
 		minify: true,
+		sourcemap: true,
 		target: "es2020",
-		rollupOptions: {
-			input: "./index.html",
-		}
 	},
 	resolve: {
 		preserveSymlinks: true,
@@ -23,5 +27,5 @@ export default defineConfig({
 			{find: "@t", replacement: path.resolve(__dirname, "./src/types")},
 			{find: "@themes", replacement: path.resolve(__dirname, "./src/themes")},
 		],
-	},
-});
+	}
+};
