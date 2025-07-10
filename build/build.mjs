@@ -1,22 +1,23 @@
 "use strict";
 import {copyFileSync, mkdirSync, existsSync, rmSync} from "node:fs";
 import {execSync} from "child_process";
-import {rm, home, execAll} from "./helpers.mjs";
+import exec from "./exec.mjs";
+import {rm, home} from "./helpers.mjs";
 
 const DEFAULT_BUILD = "app";
 const builds = {
 	"app": [
-		{cmd: () => rm(home("dist")), msg: 'Clean "dist" directory'},
-		{cmd: "yarn vue-tsc --b --noEmit", msg: "Check TypeScript"},
-		{cmd: "yarn vite build", msg: "Vite build"},
-		{cmd: "yarn vue-tsc --b", msg: "Generate .d.ts files"},
-		{cmd: "resolve-tspaths -p tsconfig.lib.json", msg: "Resolve TypeScript aliases in .d.ts files"},
-		{cmd: "api-extractor run --local --verbose -c api-extractor.jsonc", msg: "Create .d.ts rollup file"},
-		{cmd: () => rm(home("dist/dts")), msg: "Remove individual .d.ts files"}
+		{cmd: () => rm(home("dist")), title: 'Clean "dist" directory'},
+		{cmd: "vue-tsc --b --noEmit", title: "Check TypeScript"},
+		{cmd: "yarn", args: ["vite", "build"], title: "Vite build"},
+		{cmd: "yarn", args: ["vue-tsc", "--b"], title: "Generate .d.ts files"},
+		{cmd: "yarn", args: ["resolve-tspaths","-p","tsconfig.lib.json"], title: "Resolve TypeScript aliases in .d.ts files"},
+		{cmd: "yarn", args: ["api-extractor","run","--local","--verbose","-c","api-extractor.jsonc"], title: "Create .d.ts rollup file"},
+		{cmd: () => rm(home("dist/dts")), title: "Remove individual .d.ts files"}
 	],
 	"demo": [
-		{cmd: () => rm(home("dist-demo")), msg: 'Clean "dist-demo" directory'},
-		{cmd: "yarn vite build", env: {BUILD_TYPE: "demo"}},
+		{cmd: () => rm(home("dist-demo")), title: 'Clean "dist-demo" directory'},
+		{cmd: "yarn", args: ["vite", "build"], env: {BUILD_TYPE: "demo"}},
 	]
 };
 
@@ -32,4 +33,10 @@ process.chdir(home());
 const whichBuild = process.argv[2] ?? DEFAULT_BUILD;
 if (!builds[whichBuild]) throw new Error(`Build name ${whichBuild} is not valid.`);
 console.log(`Building "${whichBuild}". Script contains ${builds[whichBuild].length} step(s).`);
-execAll(builds[whichBuild]);
+
+(async () => {
+	for (const [idx, command] of builds[whichBuild].entries()) {
+		await exec(command, idx + 1, builds[whichBuild].length);
+	}
+})();
+
